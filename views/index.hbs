@@ -1,0 +1,61 @@
+<h1>{{title}}</h1>
+<p>Welcome to {{title}}</p>
+<div id="ATHMovil_Checkout_Button"></div>
+<script type="text/javascript">
+    ATHM_Checkout = {
+        env: "sandbox",
+        publicToken: "sandboxtoken01875617264",
+
+        timeout: 600,
+
+        theme: "btn",
+        lang: "en",
+
+        total: 1.0,
+        tax: 1.0,
+        subtotal: 1.0,
+
+        metadata1: "metadata1 test",
+        metadata2: "metadata2 test",
+
+        items: [
+            {
+                name: "First Item",
+                description: "This is a description.",
+                quantity: "1",
+                price: "1.00",
+                tax: "1.00",
+                metadata: "metadata test",
+            },
+            {
+                name: "Second Item",
+                description: "This is another description.",
+                quantity: "1",
+                price: "1.00",
+                tax: "1.00",
+                metadata: "metadata test",
+            },
+        ],
+        onCompletedPayment: function (response) {
+            //Handle response
+
+            let transaction = {
+                meta: response.metadata1,
+                ref: response.referenceNumber,
+                total: response.total
+            }
+            console.log(transaction);
+            fetch("/payment", {
+
+                // Adding method type 
+                method: "POST",
+
+                // Adding body or contents to send 
+                body: JSON.stringify(transaction),
+                headers: { "Content-type": "application/json; charset=UTF-8" }
+
+            }).then(response => response.json())
+
+        },
+    };
+</script>
